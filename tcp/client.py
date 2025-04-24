@@ -1,13 +1,17 @@
 import socket
 
-def send_message_to_server(addr: str, port: int):
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.connect((addr, port))
-    message = 'ping'
-    server_sendall(message.encode())
 
-if _name_ == '_main_':
-    HOST='localhost'
-    PORT=8000
+def start_client(address: str,port: int):
+    client_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    message = input('Digite sua mensagem: ').encode()
 
-    send_message_to_server(HOST, PORT)
+    client_server.connect((address,port))
+    client_server.sendall(message)
+    data = client_server.recv(1024)
+    print(f'Mensagem direto do servidor: {data.decode()}')
+
+if __name__=="__main__":
+    HOST = 'localhost'
+    PORT = 8000
+
+    start_client(HOST,PORT)
