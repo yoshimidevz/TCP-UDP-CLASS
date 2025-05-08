@@ -1,21 +1,28 @@
 import socket
 
-HOST = 'localhost'
-PORT = 8000
-
-def start_server(address: str,port: int):
+def start_server(addr: str, port: int):
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind((address, port))
+    server_socket.bind((addr,port))
     server_socket.listen(1)
 
-    print("Servidor rodando...")
-    while True:
-        client, address = server_socket.accept()
-        print(f'Conexão aceita no end. {address}')
-        data = client.recv(1024)
-        print(f'Messagem: {data.decode()}')
-        client.send('Mensagem recebida !'.encode())
-        client.close()
+    print(f'Server está rodando..  addr: {addr} port: {port}')
 
-if __name__=="__main__":
-    start_server(HOST,PORT)
+
+    client_socket, addr= server_socket.accept()
+    print(f'Conexão estabelecida no endereço: {addr}')
+
+    while True:
+        data = client_socket.recv(1024).decode()
+        print(f'[CLIENTE]: {data}')
+
+        client_socket.sendall('pong'.encode())
+
+    # client_socket.close()
+
+
+
+if __name__=='__main__':
+    HOST='localhost'
+    PORT=8000
+
+    start_server(HOST, PORT)
